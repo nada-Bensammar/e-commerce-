@@ -1,13 +1,14 @@
-const mysql = require('mysql2');
-
-const pool = mysql.createPool({
-  host: 'localhost',
-  user: 'root', // Replace with your MySQL username
-  password: 'password', // Replace with your MySQL password
-  database: 'ecommerce_db',
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0
-});
-
-module.exports = pool.promise();
+const mongoose = require('mongoose');
+ 
+mongoose.connect('mongodb://127.0.0.1:27017/e-commerce')
+    .then(
+        ()=>{
+            console.log('connected');
+        }
+    )
+      .catch(
+        (err)=>{
+            console.log(err);
+        }
+      )
+module.exports = mongoose;

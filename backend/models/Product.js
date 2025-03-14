@@ -1,15 +1,22 @@
-const db = require('../config/db');
+const Product = require('../models/Product');
 
-class Product {
-  static async getAll() {
-    const [rows] = await db.query('SELECT * FROM Products');
-    return rows;
+exports.getAllProducts = async (req, res) => {
+  try {
+    const products = await Product.find();
+    res.json(products);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
+};
 
-  static async getById(productId) {
-    const [rows] = await db.query('SELECT * FROM Products WHERE product_id = ?', [productId]);
-    return rows[0];
+exports.getProductById = async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);
+    if (!product) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+    res.json(product);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
-}
-
-module.exports = Product;
+};
