@@ -39,14 +39,14 @@ exports.createReview = asyncHandler(async (req, res) => {
     throw new Error('Please include rating and product');
   }
 
-  // Check if product exists
+  
   const productExists = await Product.findById(product);
   if (!productExists) {
     res.status(400);
     throw new Error('Product not found');
   }
 
-  // Check if user already reviewed this product
+
   const alreadyReviewed = await Review.findOne({
     user: req.user._id,
     product
@@ -72,5 +72,4 @@ exports.createReview = asyncHandler(async (req, res) => {
 });
 
 
-exports.updateReview = asyncHandler(async (req, res) => {
-  const review = await Review.findById
+
