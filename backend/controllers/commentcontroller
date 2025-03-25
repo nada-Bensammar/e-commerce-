@@ -5,7 +5,7 @@ exports.createComment = async (req, res) => {
   try {
     const { productId, text, rating } = req.body;
     
- 
+   
     if (!productId || !text || !rating) {
       return res.status(400).json({ error: 'Missing required fields' });
     }
@@ -18,6 +18,8 @@ exports.createComment = async (req, res) => {
     });
 
     await comment.save();
+    
+
     const product = await Product.findById(productId);
     if (product) {
       await product.updateRating();
@@ -48,6 +50,7 @@ exports.deleteComment = async (req, res) => {
     if (!comment) {
       return res.status(404).json({ error: 'Comment not found' });
     }
+    
 
     if (!req.user.isAdmin && !comment.userId.equals(req.user._id)) {
       return res.status(403).json({ error: 'Not authorized' });
@@ -85,7 +88,8 @@ exports.updateComment = async (req, res) => {
     comment.text = text || comment.text;
     comment.rating = rating || comment.rating;
     await comment.save();
- 
+    
+
     const product = await Product.findById(comment.productId);
     if (product) {
       await product.updateRating();
@@ -96,3 +100,4 @@ exports.updateComment = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+
