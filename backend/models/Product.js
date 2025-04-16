@@ -1,14 +1,52 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose"
 
-const productSchema = new mongoose.Schema({
+const product = new mongoose.Schema({
   name: { type: String, required: true },
-  description: { type: String, required: true },
-  price: { type: Number, required: true },
-  stock_quantity: { type: Number, required: true },
-  image_url: { type: String },
-  created_at: { type: Date, default: Date.now }
+  description: {
+     type: String,
+      required: true
+     },
+  price: { 
+    type: Number,
+     required: true
+     },
+
+category: {
+  type: mongoose.Schema.Types.ObjectId,
+  ref: 'Category',
+  required: true
+},
+rating: {
+  type: Number,
+  default: 0
+},
+numReviews: {
+  type: Number,
+  default: 0
+},
+  brand: { 
+    type: String, 
+    required: true
+   },
+  stock_quantity: { 
+    type: Number, 
+    required: true
+   },
+  images: [{
+     type: String 
+    }],
+  attributes: {
+    color: String,
+    storage: String,
+    screen_size: String,
+  },
+  created_at: { type: Date, default: Date.now },
+  updated_at: { type: Date, default: Date.now },
+});
+product.pre('save', function(next) {
+  console.log(`📦 Saving product to collection: ${this.collection.name}`);
+  console.log(`Document: ${JSON.stringify(this, null, 2)}`);
+  next();
 });
 
-const Product = mongoose.model('Product', productSchema);
-
-module.exports = Product;
+export default product;

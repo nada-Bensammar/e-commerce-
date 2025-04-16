@@ -1,9 +1,10 @@
-const express = require('express');
-const orderController = require('/backend/controllers/ordercontroller.js');
-const authMiddleware = require('../middleware/authMiddleware'); 
+import express from 'express';
+import { createOrder, getOrderById } from '../controllers/ordercontroller.js';
+import { protect } from '../middleware/authMiddleware.js';
+
 const router = express.Router();
 
-router.post('/', orderController.createOrder, authMiddleware);
-router.get('/:id', orderController.getOrderById);
+router.post('/', protect, createOrder);
+router.get('/:id', getOrderById);
 
-module.exports = router;
+export default router;
