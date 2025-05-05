@@ -2,27 +2,24 @@ import express from 'express';
 
 import {
   createComment,
-  getProductComments,
+  getComments,
   updateComment,
   deleteComment
 } from '../controllers/commentcontroller.js';
 
-import { protect } from '../middleware/authMiddleware.js';
+
 
 const router = express.Router({ mergeParams: true });
 
 
-router.route('/products/:productId/comments')
-  .get(getProductComments);
+router.get('/', getComments);
 
 
-router.use(protect);
+router.post('/',createComment)
+  
 
-router.route('/')
-  .post(createComment);
+router.put('/:id', updateComment);
 
-router.route('/:id')
-  .patch(updateComment)
-  .delete(deleteComment);
+
 
 export default router;

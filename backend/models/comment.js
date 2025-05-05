@@ -8,12 +8,12 @@ const commentSchema = new mongoose.Schema({
     maxlength: [500, 'Comment cannot exceed 500 characters']
   },
   product: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: String,
     ref: 'Product',
     required: [true, 'Comment must belong to a product']
   },
   user: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: String,
     ref: 'User',
     required: [true, 'Comment must belong to a user']
   },

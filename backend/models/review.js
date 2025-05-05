@@ -1,13 +1,14 @@
 import mongoose from "mongoose";
 
-const review = new mongoose.Schema({
+
+const reviewschema = new mongoose.Schema({
   user: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: String,
     required: true,
     ref: 'User'
   },
   product: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: String,
     required: true,
     ref: 'Product'
   },
@@ -31,39 +32,14 @@ const review = new mongoose.Schema({
 });
 
 
-review.index({ user: 1, product: 1 }, { unique: true });
 
 
-review.statics.calculateAverageRating = async function(productId) {
-  const stats = await this.aggregate([
-    { $match: { product: productId } },
-    { 
-      $group: {
-        _id: '$product',
-        averageRating: { $avg: '$rating' },
-        numReviews: { $sum: 1 }
-      }
-    }
-  ]);
-
-  try {
-    await mongoose.model('Product').findByIdAndUpdate(productId, {
-      rating: stats[0]?.averageRating || 0,
-      numReviews: stats[0]?.numReviews || 0
-    });
-  } catch (err) {
-    console.error(err);
-  }
-};
 
 
-review.post('save', function() {
-  this.constructor.calculateAverageRating(this.product);
-});
 
 
-review.post('remove', function() {
-  this.constructor.calculateAverageRating(this.product);
-});
+
+
+const review= mongoose.model('review', reviewschema);
 
 export default review;

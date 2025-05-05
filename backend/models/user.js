@@ -1,16 +1,20 @@
 import mongoose from "mongoose";
-
+import bcrypt from 'bcryptjs';
 
 const userSchema = new mongoose.Schema({
-  username: { type: String, required: true, unique: true },
+  name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
-  password_hash: { type: String, required: true },
-  first_name: { type: String },
-  last_name: { type: String },
-  address: { type: String },
-  country: { type: String },
-  phone_number: { type: String },
-  created_at: { type: Date, default: Date.now }
+  password: { type: String, required: true },
+  isAdmin: {
+    type: Boolean,
+    default: false
+  },
+});
+
+userSchema.pre('save', async function(next) {
+  if (!this.isModified('password')) return next();
+  this.password = await bcrypt.hash(this.password, 10);
+  next();
 });
 
 const User= mongoose.model('User', userSchema);
