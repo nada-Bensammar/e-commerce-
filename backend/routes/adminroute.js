@@ -4,12 +4,13 @@ import {
   getProducts,
   addProduct,
 } from '../controllers/admincontroller.js';
-import { protect, admin } from '../middleware/authMiddleware.js';
+
+import verifyAdmin from '../middleware/verifyAdmin.js'
 
 const router = express.Router();
 
 router.post('/login', loginAdmin); 
-router.get('/products', protect, admin, getProducts);
-router.post('/products', protect, admin, addProduct);
+router.get('/products', verifyAdmin, getProducts);
+router.post('/products',verifyAdmin, addProduct);
 
 export default router;

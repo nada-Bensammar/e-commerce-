@@ -1,13 +1,18 @@
 import Admin from '../models/admin.js';
-import Product from '../models/product.js';
+import Product from '../models/Product.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret';
+const JWT_SECRET = process.env.JWT_SECRET ||'MYsecrectJWT12345' 
+
 
 
 export const loginAdmin = async (req, res) => {
   const { username, password } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({ message: 'Username and password are required' });
+  }
 
   try {
     const admin = await Admin.findOne({ username });
@@ -21,15 +26,27 @@ export const loginAdmin = async (req, res) => {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
-    const token = jwt.sign({ id: admin._id, role: 'admin' }, JWT_SECRET, {
-      expiresIn: '1h',
+    const token = jwt.sign(
+      { id: admin._id, role: 'admin' },
+      JWT_SECRET,
+      { expiresIn: '1h' }
+    );
+
+    res.json({
+      message: 'Login successful',
+      token,
+      admin: {
+        id: admin._id,
+        username: admin.username
+      }
     });
 
-    res.json({ token });
   } catch (error) {
     res.status(500).json({ error: 'Server error' });
   }
 };
+
+
 
 
 export const getProducts = async (req, res) => {
@@ -40,6 +57,8 @@ export const getProducts = async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch products' });
   }
 };
+
+
 
 
 export const addProduct = async (req, res) => {
@@ -60,7 +79,10 @@ export const addProduct = async (req, res) => {
     });
 
     const savedProduct = await newProduct.save();
-    res.status(201).json(savedProduct);
+    res.status(201).json({
+      message: 'Product added successfully',
+      product: savedProduct
+    });
   } catch (error) {
     res.status(500).json({ error: 'Failed to add product' });
   }
