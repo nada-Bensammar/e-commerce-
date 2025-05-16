@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI, {
-      dbName: "electroworld" // ← Critical for Atlas
+      dbName: "electroworld" 
     });
     console.log(`MongoDB Connected: ${mongoose.connection.host}`);
   } catch (err) {

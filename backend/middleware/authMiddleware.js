@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
-import User from '../models/user.js';
+import Admin from '../models/admin.js'
 
-// 1. Protect routes - user must be logged in
+// Protect routes - user must be logged in
 export const protect = async (req, res, next) => {
   const token = req.headers.authorization?.startsWith('Bearer') 
     ? req.headers.authorization.split(' ')[1]
@@ -12,21 +12,20 @@ export const protect = async (req, res, next) => {
   }
 
   try {
+   
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = await User.findById(decoded.id).select('-password');
+    req.admin = await Admin.findById(decoded.id).select('-password'); 
     next();
   } catch (err) {
     res.status(401).json({ error: 'Not authorized, token failed' });
   }
 };
 
-// 2. Admin check - user must be admin
+// Admin check - user must be admin
 export const admin = (req, res, next) => {
-  if (req.user && req.user.isAdmin) {
+  if (req.admin && req.admin.role === 'admin') {  
     next();
   } else {
     res.status(403).json({ error: 'Not authorized as admin' });
   }
 };
-
-  

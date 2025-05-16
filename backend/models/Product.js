@@ -31,6 +31,7 @@ category: {
   updated_at: { type: Date, default: Date.now },
 });
 
-const product = mongoose.model('product', productSchema);
+const Product = mongoose.models.Product || mongoose.model('Product', productSchema);
 
-export default product;
+
+export default Product;
