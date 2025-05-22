@@ -11,6 +11,7 @@ import reviewroute from './routes/reviewroutes.js';
 import commentroute from './routes/commentroute.js';
 import adminroute from './routes/adminroute.js';
 
+import cartRoutes from './routes/cartroute.js'
 
 
 
@@ -32,7 +33,7 @@ app.use('/api/orders', orderroute);
 app.use('/api/reviews', reviewroute);
 app.use('/api/comments', commentroute);
 app.use('/api/admin', adminroute);
-
+app.use('/api/cart',cartRoutes);
 
 
 
