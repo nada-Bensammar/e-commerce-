@@ -15,15 +15,11 @@ export const createProduct = async (req, res) => {
 export const getProducts = async (req, res) => {
   try {
     const products = await Product.find();
-    
-    if (products.length === 0) {
-      return res.status(200).json({ 
-        message: 'No products found',
-        products: []
-      });
-    }
-    
-    res.status(200).json(products);
+
+    res.status(200).json({
+      products, // ✅ wrap it in an object
+      message: products.length === 0 ? 'No products found' : 'Products retrieved successfully',
+    });
   } catch (error) {
     res.status(500).json({
       message: 'Database error',
