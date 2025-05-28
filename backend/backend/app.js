@@ -3,9 +3,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import cors from 'cors';
 
-import aiRoutes from "./routes/ai.js"
-import wishlistRoutes from "./routes/wishlistROUTE.js";
-import couponroutes from "./routes/couponroute.js"
+
 import productRoute from './routes/productRoutes.js';
 import userroute from './routes/userroute.js';
 import orderroute from './routes/orderroute.js';
@@ -23,7 +21,6 @@ const app = express();
 app.use(cors());
  
 app.use(express.json());
-app.use("/api/ai", aiRoutes)
 
 mongoose.connect(process.env.DATABASE_URL)
   .then(() => console.log('Connected to MongoDB'))
@@ -38,8 +35,7 @@ app.use('/api/comments', commentroute);
 app.use('/api/admin', adminroute);
 app.use('/api/cart',cartRoutes);
 
-app.use("/api/wishlist", wishlistRoutes);
-app.use("/api/coupon", couponroutes)
+
 
 app.get('/', (req, res) => {
   res.send('Welcome to the Electronics Shop API!');

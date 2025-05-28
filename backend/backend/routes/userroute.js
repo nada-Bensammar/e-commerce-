@@ -6,9 +6,8 @@ import { createUser, getAllUsers,getUserById ,login ,deleteUser} from '../contro
 const router = express.Router();
 router.get('/', getAllUsers);
 router.post('/createUser', createUser);
-router.post('/login', login);
 router.get('/:id', getUserById);
 router.delete('/:id', deleteUser);
-
+router.post('/login', login);
 
 export default router;
